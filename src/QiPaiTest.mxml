@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" fontSize="12" backgroundColor="#ffffff" creationComplete="init()">
+	<mx:Metadata>
+		[Event(name='call')]
+		[Event(name='change')]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import model.vo.CallFunctionVO;
+			import flash.utils.getQualifiedClassName;
+			public static var CALL:String = 'call';
+			public static var CHANGE:String = 'change';
+			
+			private var facade:ApplicationFacade = ApplicationFacade.getInstance();
+			private function init():void
+			{
+				facade.startup(this);
+			}
+			
+			private function sendEvent($name:String):void
+			{
+				 dispatchEvent(new Event($name));	
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%">
+		<mx:ComboBox id="cFunCB" prompt="选择一个C++函数" rowCount="7" labelField="name" change="sendEvent(CHANGE)"/>
+		<mx:Button label="调用" click="sendEvent(CALL)" enabled="{cFunCB.selectedIndex!=-1}"/>
+		<mx:Spacer width="100%"/>
+		<mx:Button label="清空" click="infoTA.text=''"/>
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalAlign="center">
+		<mx:Label text="调用C++命令：{cFunCB.selectedItem.name}({cFunCB.selectedItem.param})"/>
+		<mx:Label text="类型：{getQualifiedClassName(cFunCB.selectedItem.param)}" fontWeight="bold" color="#FF0000"/>
+	</mx:HBox>
+	<mx:Label id="callbackLabel" color="#0000FF"/>
+	<mx:TextArea id="infoTA" width="100%" height="100%"/>
+</mx:Application>

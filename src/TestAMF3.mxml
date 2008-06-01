@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="500" height="400">
+	<mx:TextArea width="100%" height="260" id="info"/>
+	<mx:ComboBox id="uri">
+		<mx:Array>
+			<mx:String>http://amf3.kk080.net/gataway.aspx</mx:String>
+		</mx:Array>
+	</mx:ComboBox>
+	<mx:ComboBox id="fun">
+		<mx:Array>
+			<mx:String>HelloWorld</mx:String>
+		</mx:Array>
+	</mx:ComboBox>	
+	<mx:Button label="test" click="invoke()"/>
+	<mx:RemoteObject id="test" destination="sample" source="Remoting.Sample"  showBusyCursor="true" fault="sampleFaultHandler(event)">
+		<mx:method name="Echo" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>		
+	</mx:RemoteObject>
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+
+			private function invoke():void
+			{
+				test.Echo('helloWorld!');
+			}
+			
+			private function sampleFaultHandler(evt:FaultEvent):void
+			{
+				trace('sampleFaultHandler:\n{1}', evt.fault);
+			}
+			
+			private function echoResultHandler(evt:ResultEvent):void
+			{
+				info.text += ('_resultEvent:'+ evt.result);
+			}
+			
+			private function echoFaultHandler(evt:FaultEvent):void
+			{
+				info.text += ('_faultEvent:' + evt.fault);		
+			}
+		]]>
+	</mx:Script>
+</mx:Application>

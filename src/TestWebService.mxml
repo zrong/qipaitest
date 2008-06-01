@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="500" height="400">
+	<mx:TextArea width="100%" height="260" id="info"/>
+	<mx:ComboBox id="uri">
+		<mx:Array>
+			<mx:String>http://www.kk080.net/WebService/Interface.asmx?WSDL</mx:String>
+			<mx:String>http://www.kk080.net/WebService/Session.asmx?WSDL</mx:String>
+		</mx:Array>
+	</mx:ComboBox>
+	<mx:ComboBox id="fun">
+		<mx:Array>
+			<mx:String>TestDataTable</mx:String> 
+			<mx:String>a</mx:String>
+			<mx:String>b</mx:String>
+			<mx:String>HelloWorld</mx:String>
+		</mx:Array>
+	</mx:ComboBox>	
+	<mx:Button label="test" click="invoke()"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.soap.WebService;
+			private var _ws:WebService;
+			
+			private function invoke():void
+			{
+				_ws = new WebService();
+				//_ws.addEventListener(LoadEvent.LOAD, _loadEvent);
+				//_ws.addEventListener(InvokeEvent.INVOKE, _invokeEvent);
+				_ws.addEventListener(ResultEvent.RESULT, _resultEvent);
+				_ws.addEventListener(FaultEvent.FAULT, _faultEvent);
+				_ws.loadWSDL(uri.selectedLabel);
+				_ws.getOperation(fun.selectedLabel).send('zrong');				
+			}
+			
+			private function _resultEvent(evt:ResultEvent):void
+			{
+				var __result:Object = evt.result.Tables.Table1.Rows[0];
+				trace(__result.ErrorInfo);
+				info.text += ('_resultEvent:'+ evt.result);
+			}
+			
+			private function _faultEvent(evt:FaultEvent):void
+			{
+				info.text += ('_faultEvent:' + evt.fault);
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
