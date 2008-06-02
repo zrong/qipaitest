@@ -12,7 +12,7 @@
 		</mx:Array>
 	</mx:ComboBox>	
 	<mx:Button label="test" click="invoke()"/>
-	<mx:RemoteObject id="test" destination="sample" source="Remoting.Sample"  showBusyCursor="true" fault="sampleFaultHandler(event)">
+	<mx:RemoteObject id="test" destination="fluorine" source="Remoting.Sample"  showBusyCursor="true" fault="sampleFaultHandler(event)">
 		<mx:method name="Echo" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>		
 	</mx:RemoteObject>
 	<mx:Script>
