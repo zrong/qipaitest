@@ -1,25 +1,36 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <services-config>
-  <services>
-    <service-include file-path="remoting-config.xml" />
-  </services>
-
-  <security>
-      <security-constraint id="privileged-users">
-        <auth-method>Custom</auth-method>
-        <roles>
-          <role>privilegeduser</role>
-        </roles>
-      </security-constraint>
-      <login-command class="FluorineFx.Security.GenericLoginCommand" server="asp.net"/>
-    </security>
-
-  <channels>
-    <channel-definition id="my-amf" class="mx.messaging.channels.AMFChannel">
-      <endpoint uri="http://amf3.kk080.net/Gateway.aspx" class="flex.messaging.endpoints.AMFEndpoint"/>
-      <properties>
-        <!-- <legacy-collection>true</legacy-collection> -->
-      </properties>
-    </channel-definition>
-  </channels>
+    <services>
+        <service id="remoting-service"
+                 class="flex.messaging.services.RemotingService"
+                 messageTypes="flex.messaging.messages.RemotingMessage">
+            <adapters>
+		        <adapter-definition id="dotnet" class="FluorineFx.Remoting.RemotingAdapter" default="true"/>
+		    </adapters>		    
+		    <default-channels>
+		        <channel ref="my-amf"/>
+		    </default-channels>
+            <destination id="fluorine">
+                <properties>
+                    <source>*</source>
+                    <scope>request</scope>
+                </properties>
+            </destination>
+        </service>
+    </services>
+	<security>
+	    <security-constraint id="privileged-users">
+	      <auth-method>Custom</auth-method>
+	      <roles>
+	        <role>admin</role>
+	        <role>privilegeduser</role>
+	      </roles>
+	    </security-constraint>
+	    <login-command class="ServiceLibrary.MyLoginCommand" server="asp.net"/>
+	  </security>
+    <channels>
+        <channel-definition id="my-amf" class="mx.messaging.channels.AMFChannel">
+            <endpoint uri="http://amf3.kk080.net/gateway.aspx" class="flex.messaging.endpoints.AMFEndpoint"/>
+        </channel-definition>
+    </channels>
 </services-config>
