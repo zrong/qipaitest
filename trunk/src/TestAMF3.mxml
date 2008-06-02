@@ -8,12 +8,14 @@
 	</mx:ComboBox>
 	<mx:ComboBox id="fun">
 		<mx:Array>
-			<mx:String>HelloWorld</mx:String>
+			<mx:String>Echo</mx:String>
+			<mx:String>Date</mx:String>
 		</mx:Array>
 	</mx:ComboBox>	
 	<mx:Button label="test" click="invoke()"/>
-	<mx:RemoteObject id="test" destination="fluorine" source="Remoting.Sample"  showBusyCursor="true" fault="sampleFaultHandler(event)">
-		<mx:method name="Echo" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>		
+	<mx:RemoteObject id="test" destination="fluorine" source="Remoting.kkone"  showBusyCursor="true" fault="sampleFaultHandler(event)">
+		<mx:method name="Echo" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>
+		<mx:method name="Date" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>			
 	</mx:RemoteObject>
 	<mx:Script>
 		<![CDATA[
@@ -22,7 +24,7 @@
 
 			private function invoke():void
 			{
-				test.Echo('helloWorld!');
+				test.getOperation(fun.selectedLabel).send();
 			}
 			
 			private function sampleFaultHandler(evt:FaultEvent):void
