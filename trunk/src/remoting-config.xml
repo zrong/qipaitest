@@ -3,29 +3,18 @@
     class="flex.messaging.services.RemotingService"
     messageTypes="flex.messaging.messages.RemotingMessage">
 
-	<!-- DO NOT CHANGE <adapters> SECTION-->
-    <adapters>
+     <adapters>
         <adapter-definition id="dotnet" class="FluorineFx.Remoting.RemotingAdapter" default="true"/>
     </adapters>
 
-    <default-channels>
+
+     <default-channels>
         <channel ref="my-amf"/>
     </default-channels>
-  <destination id="sample">
-    <properties>
-      <source>Remoting.Sample</source>
-      <scope>request</scope>
-    </properties>
-  </destination>
-  <!-- Configure a destination 
-		source: Fully qualified class name of the .NET object (remote object)
-		scope: Indicates whether the object is available in the request scope, the application scope, or the session scope -->
-  <!-- 
-    <destination id="destination name">
+
+    <destination id="fluorine">
         <properties>
-            <source>Fully qualified class name of the .NET object</source>
-            <scope>request</scope>
+            <source>*</source>
         </properties>
     </destination>
-    -->
 </service>
