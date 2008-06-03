@@ -10,21 +10,25 @@
 		<mx:Array>
 			<mx:String>Echo</mx:String>
 			<mx:String>Date</mx:String>
+			<mx:String>CheckLogin</mx:String>
 		</mx:Array>
 	</mx:ComboBox>	
 	<mx:Button label="test" click="invoke()"/>
-	<mx:RemoteObject id="test" destination="fluorine" source="Remoting.kkone"  showBusyCursor="true" fault="sampleFaultHandler(event)">
+	<mx:RemoteObject id="test" destination="fluorine" source="remoting.kkone"  showBusyCursor="true" fault="sampleFaultHandler(event)">
 		<mx:method name="Echo" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>
-		<mx:method name="Date" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>			
+		<mx:method name="Date" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>
+		<mx:method name="CheckLogin" result="echoResultHandler(event)" fault="echoFaultHandler(event)"/>
 	</mx:RemoteObject>
 	<mx:Script>
 		<![CDATA[
+			import remoting.Login;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-
+			import flash.utils.getQualifiedClassName;
+						
 			private function invoke():void
 			{
-				test.getOperation(fun.selectedLabel).send();
+				test.getOperation(fun.selectedLabel).send('zrong', '666111');
 			}
 			
 			private function sampleFaultHandler(evt:FaultEvent):void
@@ -34,7 +38,8 @@
 			
 			private function echoResultHandler(evt:ResultEvent):void
 			{
-				info.text += ('_resultEvent:'+ evt.result);
+				info.text += ('_resultEvent:'+ getQualifiedClassName(evt.result));
+				trace(getQualifiedClassName(evt.result as Login));
 			}
 			
 			private function echoFaultHandler(evt:FaultEvent):void
